@@ -1,0 +1,1121 @@
+%$% USCthesis.sty
+%$% USC Thesis/Dissertation document-style
+%$% $Header: /export/home/tobor-01/boyoon/cvsroot/paper/thesis/USCthesis.sty,v 1.1.1.1 2003/11/12 19:13:56 boyoon Exp $
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% @LaTeX-style-file{
+%%%    Author              = "Brian P. Gerkey",
+%%%    Version             = "3.1",
+%%%    Date                = "30 August 2002",
+%%%    Time                = "14:22:21 EDT",
+%%%    Filename            = "USCthesis.sty",
+%%%    Address             = "Robotics Research Lab
+%%%                           School of Computer Science
+%%%                           University of Southern California
+%%%                           941 W. 37th Pl.
+%%%                           SAL 300, Mailcode 0781
+%%%                           Los Angeles, CA 90089-0781
+%%%                           USA",
+%%%    Telephone           = "(213) 740-6243",
+%%%    FAX                 = "",
+%%%    Email               = "gerkey@robotics.usc.edu (Internet)",
+%%%    CodeTable           = "ISO/ASCII",
+%%%    Keywords            = "LaTeX, Thesis, Dissertation",
+%%%    Archives            = "shsu*",
+%%%    Supported           = "yes",
+%%%    Abstract            = "LaTeX document-style for typesetting
+%%%                           Theses or Dissertations in accordance
+%%%                           with the University of Southern
+%%%                           California Regulations for Format and
+%%%                           Presentation of Theses and Dissertations.
+%%%                           It provides some alternative ``bells and
+%%%                           whistles'' such as support for
+%%%                           multi-volume documents."
+%%%    Note                = "Requires the `doublespace' and `tabularx'
+%%%                           packages, in addition to the standard LaTeX
+%%%                           `report' class."
+%%%    SeeAlso             = "techreport.sty",
+%%% }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%$% $Log: USCthesis.sty,v $
+%$% Revision 1.3.1 2016/06/15 19:00:00 Masoud Moshref
+%$%	  Remove \reference command. Use biblatex package insteaad
+%$%   Fix appendix and prefacesection to work with hyperref package
+%$% Revision 1.3 2010/08/12 19:00:00 Marcos Vieira
+%$%   Fix Title to be double spaced
+%$%   Fix default to be 'FACULTY OF USC GRADUATE SCHOOL'
+%$%   Fix default to be 'References' (Reference List has been deprecated)
+%$%   Fix the thickness of the front page line
+%$% 
+%$% Revision 1.2.1 2008/03/14 13:47:00 dlatimer
+%$% updated TOC to have title "Table of Contents"
+%$% updated TOC to have chapters be formatted "Chapter X:   Blah"
+%$%
+%$% Revision 1.1.1.1  2003/11/12 19:13:56  boyoon
+%$% imported version
+%$%
+%$% Revision 1.2  2003/07/16 17:35:55  gerkey
+%$% updated uscthesis
+%$%
+%$% Revision 1.16  2003/07/16 17:25:17  gerkey
+%$% changed version num
+%$%
+%$% Revision 1.15  2003/07/12 04:28:48  gerkey
+%$% made prefacesection titles left-justified, rather than centered
+%$%
+%$% Revision 1.14  2003/06/12 23:30:55  gerkey
+%$% added proquest package
+%$%
+%$% Revision 1.13  2003/06/12 20:00:20  gerkey
+%$% foo
+%$%
+%$% Revision 1.12  2003/06/12 17:23:11  gerkey
+%$% foo
+%$%
+%$% Revision 1.11  2003/04/28 23:41:05  gerkey
+%$% fixed spacing between Copyright and author name
+%$%
+%$% Revision 1.10  2003/04/28 23:33:55  gerkey
+%$% took out incorrect documentation
+%$%
+%$% Revision 1.9  2002/08/30 19:43:04  gerkey
+%$% slight changes
+%$%
+%$% Revision 1.8  2002/08/30 19:24:38  gerkey
+%$% removed extra inter-chapter spacing in LOF and LOT by redefining report.cls's
+%$% \chapter command.
+%$%
+%$% Revision 1.7  2002/08/30 17:55:55  gerkey
+%$% changed (fixed) page margins and used \setstretch{2.0} to get "real"
+%$% double-spacing, per Yaser's comments.  except for spacing in lof and lot,
+%$% we're in compliance with 2002 guidelines.
+%$%
+%$% Revision 1.6  2002/08/27 19:47:38  gerkey
+%$% made the following fixes:
+%$%   - body uses true doublespacing
+%$%   - listoffigures and listoftables entries are singlespaced, with
+%$%       doublespacing between entries
+%$%   - cover page re-formatted to match guidelines
+%$%
+%$% Revision 1.5  2002/08/19 18:49:15  gerkey
+%$% fixed two user-reported bugs in order to adhere to the 2002 guidelines:
+%$%
+%$%   - Submission date on cover is now normal, not bold
+%$%
+%$%   - Copyright notice on cover is now not centered; rather the "Copyright 2002"
+%$%     is on the left, and the author name is on the right.
+%$%
+%$% Revision 1.4  2001/11/08 22:19:37  gerkey
+%$% changed comments and docs
+%$%
+%$% Revision 1.3  2001/11/08 01:25:29  gerkey
+%$% rejigged to start from v.2.3
+%$%
+%%
+%%
+%$%  Revision 3.0  2001/11/07  16:47:08  brian gerkey (gerkey@usc.edu)
+%$%  Converted from a LaTeX 2.09 style to a LaTeX2e package
+%$%
+%$%      - AFAIK, there are no changes to style, layout, or default options;
+%$%          just some hacking to adhere to the LaTeX2e package interface.
+%$%
+%$%      - Usage is now as follows:
+%$%          \documentclass{report}
+%$%          \usepackage[<options>]{USCthesis}
+%$%          \begin{document}
+%$%       <options> can be any of the old options (e.g., proposal, fussy),
+%$%       as documented below.
+%$%
+%%   Added some comments.  And corrected some spelling.
+%$%
+%$%  Revision 2.3  92/08/13  14:22:21  sdc
+%$%  Added \universityname for easy use outside USC.  Also the
+%$%  \if@techreport switch can be used to turn off the one-side-only
+%$%  warning message (for better interface with the techreport style
+%$%  option).  Placed a check for TeX-3.0 to allow an old TeX to work
+%$%  without warnings.  Cleaned-up the code and comments a little.
+%$%
+%$%  Revision 2.2  92/06/29  10:59:15  sdc
+%$%  Added standard file header for style.
+%$%
+%$%  Revision 2.1  91/02/09  00:54:08  cochran
+%$%  Fixed bug in interaction with techreport.sty.
+%$%
+%$%  Revision 2.0  91/01/03  16:12:48  cochran
+%$%  Merged divergent branches by cochran@iris.usc.edu (1.10) and by
+%$%  tli@almaak.usc.edu (1.11); these are common up to revision 1.8.
+%$%  Removed fix in 1.11 which added Reference List to the TOC since
+%$%  this is handled by the \references command.
+%$%
+%$%    Changes by tli@almaak.usc.edu:
+%$%
+%$%      1.11 (90/09/23) Change title font to 12pt.  Change author's
+%$%      font to 12pt.  Fix Reference List so that it shows up in TOC.
+%$%      Break the way that appendices show up in TOC.
+%$%
+%$%      1.10 (90/07/10) Added a hack to make it work with TeX 3.0.
+%$%
+%$%      1.9 (90/01/30) Make subsubsections show up with numbered
+%$%      labels and in the TOC.
+%$%
+%$%    Changes by cochran@iris.usc.edu:
+%$%
+%$%      1.10 (90/12/29) Added commands and modified \title to allow
+%$%        multiple volume dissertations.  Fixed bug which caused the
+%$%        pagestyle of the TOC to be wrong if there were no
+%$%        preceeding prefacesections.
+%$%
+%$%      1.9 (90/12/03)  Corrected title size to correspond to the
+%$%        University Publications statement that the "Title must be
+%$%        the same size as `FACULTY OF ...' and no bold print.  Also
+%$%        added an optional argument to the \pageleft command to
+%$%        allow the fine tuning of the gutter margin in the
+%$%        techreport style option.
+%$%
+%$%  Revision 1.8  89/09/15  19:39:11  tli
+%$%  Change spacing in accordance with University Publications.
+%$%
+%$%  Revision 1.7  89/01/27  13:56:04  tli
+%$%  Too much space after a saying.
+%$%
+%$%  Revision 1.6  89/01/26  14:01:20  tli
+%$%  Added the saying environment.
+%$%
+%$%  Revision 1.5  88/11/02  10:42:47  cochran
+%$%  Minor corrections and removal of unnecessary \makeatletter and
+%$%  \makeatother.
+%$%
+%$%  Revision 1.4  88/10/20  11:58:38  cochran
+%$%  Updated to allow the user more control over spacing to the "blue
+%$%  lines," and to be in accordance with the USC Regulations for
+%$%  Format and Presentation of Theses and Dissertations, published
+%$%  March 1987.
+%$%
+%$%  Revision 1.3  88/03/16  10:49:19  cochran
+%$%  Several small updates to \committee as suggested by peng@USC-IRIS.
+%$%
+%$%  Revision 1.1  88/03/05  20:04:51  cochran
+%$%  Set penalties, and new margin and page sizes.  Fixed bug which
+%$%  caused a wrong contents page for long lists of figures or tables.
+%$%
+%$%  Revision 1.0  87/03/05  18:29:34  cochran
+%$%  Created by combining the best (?) features of the dissertation
+%$%  styles written by Herb Barad @ USC-SIPI and Howard Trickey @
+%$%  Stanford University.
+%$%
+%$% NOTE:  This style assumes the existance of Stephen Page's
+%$%        `doublespace' package in addition to the standard
+%$%        LaTeX `report' document class.
+%%%
+%%% Example:
+%%%
+%%%    \documentclass[11pt]{report}
+%%%    \usepackage[proposal]{USCthesis}
+%%%    \usepackage[backend=bibtex,style=numeric,hyperref=true]{biblatex}
+%%%    \addbibresource{mybib.bib}
+%%%    \begin{document}
+%%%    \title[Volume I]{Dissertation Title}
+%%%    \author{Terry FullName Candidate}
+%%%    \committee{J.~Smith & (Chairperson)\\*
+%%%               N.~Jones\\*
+%%%               S.~Foobar & (Outside Member)}
+%%%    \begin{preface}
+%%%      \prefacesection{Dedication}
+%%%        This dissertation is dedicated to . . .
+%%%      \prefacesection{Acknowledgements}
+%%%        I would like to thank . . .
+%%%        \tableofcontents
+%%%        \listoftables
+%%%        \listoffigures
+%%%      \prefacesection{Abstract}
+%%%        This dissertation contains all knowledge about . . .
+%%%    \end{preface}
+%%%    \chapter{Introduction}
+%%%         . . .
+%%%    \chapter{Conclusions}
+%%%         . . .
+%%%    %\cleardoublepage % Might need to use this command to fix References TOC page number
+%%%    \begin{singlespace}
+%%%      \printbibliography[title={References},heading=bibintoc]
+%%%      \appendix
+%%%      \chapter{A Long Proof}
+%%%         . . .
+%%%    \end{singlespace}
+%%%         . . .
+%%%    \addvolumecontents{thesis_part2}
+%%%    \addvolumecontents{thesis_part3}
+%%%    \addvolumecontents[lof]{thesis_part2}
+%%%    \end{document}
+%%%
+%%% Documentation:
+%%%
+%%%  This style file modifies the standard report class to follow the
+%%%  "USC Regulations for Format and Presentation of Theses and
+%%%  Dissertations" (July 1989) document published by the Office of
+%%%  University Publications.
+%%%
+%%%  The following options are available for use in the
+%%%  \usepackage[<options>]{USCthesis} (other formatting options,
+%%%  such as specifying the base typesize, should be given as
+%%%  \documentclass[<options>]{report})
+%%%
+%%%     `dissertation' (default), or `thesis' title page.
+%%%
+%%%     `final' (default) or `proposal' layout.
+%%%
+%%%     `copyright' (default) or `nocopyright' message on title page.
+%%%       This affects the `final' layout only.
+%%%
+%%%     `fussy' (default) or `sloppy' word spacing.  This affects the
+%%%       alignment at the right margin.  Fussy will sometimes write
+%%%       over the blue line but is very useful for finding problem
+%%%       areas during the development of the thesis.  Sloppy will
+%%%       insure that no line passes the right margin, but may need
+%%%       to over stretch the line and thus generate an underfilled
+%%%       hbox message.
+%%%
+%%%     `clref' (default) or `opref' to set the open or closed format
+%%%       of the entries in the references section.
+%%%
+%%%     `flushbottom' (default) or `raggedbottom' to make text either flush
+%%%       or ragged at the bottom of each page.
+%%%
+%%%  The following may be set PRIOR to the \begin{document} in order
+%%%  to make adjustments to fit the text in the "blue lines".  The
+%%%  values listed below are the defaults:
+%%%
+%%%     \pagetop{1.1 true in}    % 1 inch plus allowance
+%%%     \pageleft{1.6 true in}   % 1.5 inches plus allowance
+%%%     \pageheight{8.5 true in} % 9 inches minus allowance
+%%%     \pagewidth{5.85 true in}  % 6 inches minus allowance
+%%%     \pagemargin{2.0}          % Number of (unstretched) lines
+%%%                               %   between text and page number
+%%%     \setstretch{1.3}          % Set the "double" spacing
+%%%
+%%%  These values vary according to the printer being used (even
+%%%  different instances of the same brand will transfer the paper
+%%%  just a little differently).  The best way to adjust them is to
+%%%  run three or four pages of the "blue line" paper through the
+%%%  printer that will be used.  Choose pages with full amount of
+%%%  text.  Then adjust the \pageleft (and \pagewidth if necessary) by
+%%%  the average amount necessary over the pages.  Next do the same
+%%%  for \pagetop and \pageheight.  Leave enough allowance to allow
+%%%  for the paper to shift a little, usually a little more in the
+%%%  direction of travel.  Set the \pagemargin and \setstretch to
+%%%  values that look good and will pass the reviewer.
+%%%
+%%%  The following commands control what goes on the title page.
+%%%
+%%%     \title[volume]{thesis title}
+%%%             - The thesis title is set using the \title command.
+%%%               The optional volume parameter allows the
+%%%               specification of the volume on the title page for
+%%%               long papers which are divided.
+%%%
+%%%     \author{author's full name}
+%%%             - Authors name.
+%%%
+%%%     \universityname{UNIVERSITY OF SOUTHERN CALIFORNIA}
+%%%             - The university's name (the above is the default).
+%%%
+%%%     \schoolname{name of the school granting the degree}
+%%%             - "USC GRADUATE SCHOOL" is the default.  Changing this
+%%%               also has the effect of turning off the \majorfield
+%%%               entry.  This affects the `final' layout only.
+%%%
+%%%     \degree{degree name}
+%%%             - defaults to "Master of Science" or "Doctor of
+%%%               Philosophy" depending on whether the `thesis' or
+%%%               `dissertation' option is in effect.  This affects
+%%%               the `final' layout only.
+%%%
+%%%     \majorfield{author's major}
+%%%             - "Electrical Engineering" if omitted.  Changing the
+%%%               \schoolname has the effect of turning off the
+%%%               display of the major field.  If you specify this
+%%%               command after changing the \schoolname, both will be
+%%%               shown on the titlepage.  This affects the `final'
+%%%               layout only.
+%%%
+%%%     \committee{name1\\* name2\\* name3}
+%%%             - Currently this in only used on with the `proposal'
+%%%               option, since the signature page MUST be the one
+%%%               supplied by the University.  This affects the
+%%%               `proposal' layout only.
+%%%
+%%%     \submitdate{month & year in which submitted to Graduate School}
+%%%             - current month & year if omitted.
+%%%
+%%%     \copyrightyear{year degree conferred (next year if submitted in Dec.)}
+%%%             - current year (or next year, in December) if omitted.
+%%%               This affects only the `final' layout and only when
+%%%               the `copyright' option is in effect.
+%%%
+%%%  The PREFACE environment prints the titlepage and sets up the page
+%%%  formatting for the preface pages.  To create a preface section
+%%%  use the command:
+%%%
+%%%     \prefacesection[optional TOC name]{name}
+%%%
+%%%  To generate the Table of Contents, and the Lists of Tables and
+%%%  Figures, use the commands:
+%%%
+%%%     \tableofcontents[CONTENTS]
+%%%     \listoftables[LIST OF TABLES]
+%%%     \listoffigures[LIST OF FIGURES]
+%%%
+%%%  the bracketed names are used at the top of the sections and in
+%%%  the Table of Contents for the tables and figures.
+%%%
+%%%  When multiple volumes are present (as indicated by the use of the
+%%%  optional argument of the \title command), the Table of Contents
+%%%  may be augmented by specifying the name of the other parts of the
+%%%  document with the command:
+%%%
+%%%     \addvolumecontents[toc]{volumename}
+%%%
+%%%  This command should be placed right after the \begin{document}
+%%%  command to include prior volumes, and just before the
+%%%  \end{document} command to include the contents of later volumes.
+%%%  By default (if the optional [] section is ommited) it reads in
+%%%  the volumename.toc file (if present).  Using [lof] or [lot] work
+%%%  in the same way for the lists of figures and tables respectively.
+%%%
+%%%  To start the document at a page other than 1 (for later volumes)
+%%%  you can use the command:
+%%%
+%%%     \startingpagenumber{1}{1}
+%%%
+%%%  prior to the \begin{preface} command.  The first argument is the
+%%%  page number of the titlepage and subsequent pages numbered with
+%%%  roman numerals and the second is the number of the first page
+%%%  after the preface section. The defaults are shown above.
+%%%
+%%%  To include a reference section, use biblatex package:
+%%%
+%%%  The `saying' environment is used to set a cutesy little quotation
+%%%  at the start of the chapter, just after the chapter head.  To use:
+%%%
+%%%     \begin{saying}
+%%%         If this exercise isn't just a joke, the title of \\
+%%%         this appendix is a lie.
+%%%     \end{saying}
+%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% make it a modern package - BPG
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{USCthesis}[2003/07/16 v3.2]
+
+%%
+%% Declare the dissertation style
+%%
+\typeout{Dissertation/thesis package USCthesis Version 3.2 as
+          of 16 July 2003}
+
+%%
+%% the following option-parsing code is changed to conform to the LaTeX2e
+%% package interface - BPG
+
+%%
+%%  Define style option flags
+%%
+\newif\ifthesis
+\DeclareOption{dissertation}{
+  \thesisfalse   % Default
+}
+\DeclareOption{thesis} {
+  \thesistrue
+}
+
+\newif\ifproposal
+\DeclareOption{final} {
+  \proposalfalse        % Default
+}
+\DeclareOption{proposal} {
+  \proposaltrue
+}
+
+
+\newif\ifcopyright
+\DeclareOption{copyright} {
+  \copyrighttrue
+}
+\DeclareOption{nocopyright} {
+  \copyrightfalse
+}
+
+\DeclareOption{fussy} {
+  \fussy                         % Default
+}
+\DeclareOption{sloppy} {
+  \sloppy
+}
+
+\newif\ifflushbottom
+\DeclareOption{flushbottom} {
+  \flushbottomtrue                         % Default
+}
+\DeclareOption{raggedbottom} {
+  \flushbottomfalse
+}
+
+\newif\ifopenbib
+\DeclareOption{opref} {
+  \openbibtrue
+}
+\DeclareOption{clref} {
+  \def\ds@clref{\openbibfalse}         % Default
+}
+
+
+\newif\if@techreport
+\DeclareOption{techreport} {
+  \@techreporttrue                   %   the option is present, but
+  \xdef\@optionfiles{%                   still add to the \@optionfiles
+    \@optionfiles                    %   list.
+    \@elt techreport.sty\relax
+}}
+
+
+% set the defaults
+\ExecuteOptions{dissertation,final,copyright,fussy,clref,flushbottom}
+\ProcessOptions
+
+%%
+%% Define the Layout adjustment commands.  Initialization of values is
+%% made after loading the report style.
+%%
+\def\pagetop#1{%
+  \global \topmargin #1             % Nominal distance from page top to
+  \global\advance \topmargin -1.0 true in} %   top of boxwith running head.
+
+\def\pageleft{%
+  \@ifnextchar [%
+    {\@pageleft}%
+    {\@pageleft[0pt]}}
+
+\def\@pageleft[#1]#2{%
+  \if@twoside
+    %% Values for two-sided printing: (1/2 inch gutter margin)
+    \global \oddsidemargin #2          % Left margin on odd-numbered pages.
+    \global\advance \oddsidemargin -1.0 true in
+    \global \evensidemargin #2         % Left margin on even-numbered pages.
+    \global\advance \evensidemargin -1.5 true in
+    \global\advance \evensidemargin #1 % Adjustment for fine-tuning gutter
+                                       %   margin
+    \flushbottom
+    \ifproposal\else\if@techreport\else
+       \typeout{Warning: Thesis/Dissertation should be
+                           printed on one side only.}
+    \fi\fi
+  \else
+    %% Values for one-sided printing:
+    \global \oddsidemargin #2
+    \global\advance \oddsidemargin -1.0 true in
+    \global \evensidemargin \oddsidemargin
+    \raggedbottom
+  \fi}
+
+%
+% \footheight disappears in LaTeX2e (it was never used in 2.09 anyway).  as
+% such, \pageheight now takes just one arg and doesn't manipulate \footheight
+%    - BPG
+%\def\@pageheight[#1]#2{%
+  %\global \footheight #1%
+  %\global \textheight #2%
+  %\global\advance \textheight -\footheight}
+\def\pageheight#1{\global \textheight #1}
+
+\def\pagewidth#1{\global \textwidth #1}
+
+\def\pagemargin#1{\global \footskip #1\baselineskip}
+
+%%
+%% Let the user declare the document to be of \documentclass{report},
+%% then \usepackage{USCthesis} -BPG
+%%
+%%\usepackage{doublespace}
+\usepackage{setspace}
+\usepackage{tabularx}
+
+%%
+%% Modify Penalties
+%%
+\brokenpenalty 10000       % Disallow page breaks at hyphens (this
+               % will give some underfull vbox's, so an
+               % alternative is to use \brokenpenalty=100
+               % and manually search for and fix such page
+               % breaks)
+\clubpenalty 10000         % Disallow club (orphan) lines
+\displaywidowpenalty 10000 % Disallow widow lines before display
+\widowpenalty 10000        % Disallow widow lines
+
+%%
+%% Disallow x- or -xx breaks.  But if used in an old TeX, we will just
+%% have to do without and hope for the best.
+%%
+\ifx\undefined\inputlineno\else
+  \lefthyphenmin=2
+  \righthyphenmin=3
+\fi
+
+%%
+%% Set the Page Style Parameters
+%%
+\@addtoreset{equation}{chapter}   % Have the equation reset in each chapter
+\headheight 0.0 true pt           % Height of box containing running head
+\headsep    0.0 true pt           % Size of strut between head and text
+\topskip   10.0 true pt           % Baselineskip for the first line of page
+\itemsep    0.0 true pt           % Extra vertical space, in addition to
+                                  %   \parskip, added between list items
+
+\pagetop{1.1 true in}    % 1 inch plus allowance
+\pageleft{1.6 true in}   % 1.5 inches plus allowance
+\pageheight{8.5 true in} % 9 inches minus allowance
+\pagewidth{5.85 true in}  % 6 inches minus allowance
+\pagemargin{2.0}          % Number of (unstretched) lines
+                          % between text and page number
+
+\setstretch{2.0}          % get "real" double spacing?
+
+\ifflushbottom
+  \flushbottom
+\fi
+
+%%
+%% Redefine some font sizes so that things don't get too big.
+%%
+\let\LARGE=\Large
+\let\huge=\Large
+\let\Huge=\Large
+
+%%
+%% Redefine plain style page to move the page number to the lower
+%% right corner.
+%%
+\if@twoside
+  \def\ps@plain{%
+    \def\@oddhead{}%
+    \def\@oddfoot{\hfil\rm\thepage}%
+    \def\@evenhead{}
+    \def\@evenfoot{\rm\thepage\hfil}}%
+\else
+  \def\ps@plain{%
+    \def\@oddhead{}%
+    \def\@oddfoot{\hfil\rm\thepage}%
+    \def\@evenhead{}
+    \let\@evenfoot\@oddfoot}%
+\fi
+
+%%
+%% Define Title Page Macros
+%%
+%% \title and \author is defined in latex.tex, but we will need to
+%% redefine \title to allow the optional argument.  Also, the \thanks
+%% command is disabled and such footnotes will be thrown away or will
+%% appear in the wrong place.
+%%
+\def\title{%
+  \@ifnextchar [%
+    {\@title}%
+    {\@title[\@empty]}}
+
+\def\@title[#1]#2{%
+  \gdef\@volume{#1}%
+  \gdef\@title{#2}}
+
+%%
+%% The \addvolumecontents will add the contents of other volumes to
+%% the current volume. This command should be placed after the
+%% \begin{document} for earlier volumes and before the \end{document}
+%% for later ones.
+%%
+\def\thesisinput#1{%
+  \if@filesw
+    \begingroup
+      \let\thesisinput=\@gobble % Inhibit recursive \thesisinput's
+      \@input{#1}%
+    \endgroup
+  \fi}
+
+\def\addvolumecontents{%
+  \@ifnextchar [%
+    {\@addvolumecontents}%
+    {\@addvolumecontents[toc]}}
+
+\long\def\@addvolumecontents[#1]#2{%
+  \if@filesw
+    \begingroup
+      \let\label\@gobble
+      \let\index\@gobble
+      \let\glossary\@gobble
+      \def\protect##1{\string\string\string##1\string\space \space}%
+      \edef\@tempa{%
+        \immediate\write\@auxout{%
+          \string\@writefile{#1}{\protect \thesisinput{#2.#1}}}}%
+      \@tempa
+      \if@nobreak
+        \ifvmode
+          \nobreak
+        \fi
+      \fi
+    \endgroup
+  \fi
+  \relax}
+
+%%
+%%  The \startingpagenumber command will change the default starting
+%%  page number for the first (title) page of the current volume and
+%%  for the first page after the preface section.
+%%
+\def\@startpageA{1}
+\def\@startpageB{1}
+
+\def\startingpagenumber#1#2{%
+  \gdef\@startpageA{#1}%
+  \gdef\@startpageB{#2}}
+
+%%
+%% The following flag is used to suppress the major field name on the
+%% title page when the default school is changed (only the USC GRADUATE
+%% SCHOOL currently uses a major field).  Setting \majorfield after
+%% \schoolname will reset the flag and allow the printing of another
+%% school with a major field in addition.
+%%
+\newif\ifshowmajorfield
+\showmajorfieldtrue
+
+\def\universityname#1{%
+  \gdef\@university{\uppercase{#1}}}
+\def\@university{UNIVERSITY OF SOUTHERN CALIFORNIA}
+
+\def\schoolname#1{%
+  \gdef\@schoolname{#1}%
+  \showmajorfieldfalse}
+\def\@schoolname{USC GRADUATE SCHOOL}
+
+\def\degree#1{%
+  \ifthesis
+    \gdef\@mastersdegree{#1}%
+  \else
+    \gdef\@doctorsdegree{#1}}
+\def\@mastersdegree{MASTER OF SCIENCE}
+\def\@doctorsdegree{DOCTOR OF PHILOSOPHY}
+
+\def\majorfield#1{%
+  \gdef\@majorfield{#1}%
+  \showmajorfieldtrue}
+\def\@majorfield{Electrical Engineering}
+
+\def\committee#1{\gdef\@committee{#1}}
+\def\@committee{}
+
+\def\submitdate#1{\gdef\@submitdate{#1}}
+\def\@submitdate{%
+  \ifcase \the\month
+    \or January%
+    \or February%
+    \or March%
+    \or April%
+    \or May%
+    \or June%
+    \or July%
+    \or August%
+    \or September%
+    \or October%
+    \or November%
+    \or December%
+  \fi
+  \space
+  \number \the\year}
+
+\def\copyrightyear#1{\gdef\@copyrightyear{#1}}
+%% December dissertations should have the next year as the copyright year
+\ifnum \month=12
+  \@tempcnta=\year
+  \advance\@tempcnta by 1
+  \edef\@copyrightyear{\number \the\@tempcnta}
+\else
+  \def\@copyrightyear{\number \the\year}
+\fi
+
+%%
+%% Create the PREFACE environment.  The titlepage is generated when
+%% the environment is first entered and the numbering is roman within
+%% the preface.  The \endpreface switches to arabic numbering.
+%%
+\newenvironment{preface}{%
+  \newpage
+  \pagenumbering{roman}%
+  \pagestyle{empty}%
+  \begin{singlespace}%
+    \ifproposal
+      \makeproptitle
+      \setcounter{page}{1}%
+      \addtocounter{page}{\@startpageA}% Advance page counter for title page.
+    \else
+      \maketitle
+      \setcounter{page}{1}%
+      \addtocounter{page}{\@startpageA}% Advance page counter for (signature
+    \fi                                %   and) title.  At USC, the signature
+ \newpage                              %   page is not counted!
+%    \ifx\@volume\@empty\else % Add Volume ID to contents if present.
+%      \addtocontents{toc}{\protect\contentsline{part}{\@volume}{}}%
+%    \fi
+  \end{singlespace}%
+  \pagestyle{plain}}{%
+  \newpage
+  \pagenumbering{arabic}%
+  \pagestyle{plain}%
+  \setcounter{page}{\@startpageB}}
+
+%%
+%% Define the PROPOSAL title page
+%%
+\def\makeproptitle{%
+  \begin{titlepage}%
+    \null
+    \vskip 60.0 true pt%          To adjust centering.
+    \begin{center}
+      {\Large \@title \par}%      Set title in \Large size.
+      \ifx\@volume\@empty\else
+        \vskip 3em%               Vertical space before volume.
+        \@volume
+      \fi
+      \vskip 3em%                 Vertical space after title.
+      \ifthesis
+        {Masters Thesis Proposal}%
+      \else
+        {Ph.D. Dissertation Proposal}%
+      \fi\\*%
+      {submitted by}%
+      \vskip 3em                % Vertical space before author.
+      {\lineskip .75em
+       \@author
+       \par}%
+      \vskip 1.5cm              % Vertical space before date.
+      {\small
+        \@submitdate
+        \par}%
+      \vskip 1.5in
+      {{\bf Guidance Committee}\\*[1.0 true cm]%
+      \begin{tabular}[t]{ll}\@committee
+      \end{tabular}\par}%
+    \end{center}%
+    \par
+    \vfil
+    \end{titlepage}}
+
+%%
+%% Make the Dissertation titlepage
+%%
+\def\maketitle{%
+  \large  % title page should be 11pt or 12pt.  this should do.
+  \begin{titlepage}%
+    \setcounter{page}{0}%
+    \null
+    \vfill%\vfill
+    \begin{center}%
+    % Added by Marcos
+    \begin{doublespace} 
+    %\doublespacing
+      {\@title \par}%         Set title the same size as "FACULTY OF ..."
+      \ifx\@volume\@empty\else
+        \vskip 0.16 true in
+        \@volume
+      \fi
+      % changed to 0.16 by Marcos
+      \vskip 0.5 true in
+      by%
+      \vskip 0.16 true in
+      {\begin{tabular}[t]{c}\@author\\*[.66 true in]%
+      %changed to width 5.8 thickness 0.010 
+       \rule{5.8 true in}{0.010 true in}
+       \end{tabular}%
+       \par}
+      \vskip 1.0 true in
+      % Added by Marcos
+    \end{doublespace}
+    %\singlespace 
+      \ifthesis
+        A Thesis Presented to the%
+      \else
+        A Dissertation Presented to the%
+      \fi\\%*[0.1 true in]%
+      FACULTY OF THE \@schoolname\\%*[0.1 true in]%
+      \@university\\%*[0.1 true in]%
+      In Partial Fulfillment of the\\%*[0.1 true in]%
+      Requirements for the Degree\\%*[0.1 true in]%
+      \ifthesis
+        \@mastersdegree
+      \else
+        \@doctorsdegree
+      \fi\\%*[0.1 true in]%
+      \ifshowmajorfield
+        (\@majorfield)%
+      \fi\\%*[1.0 true cm]%
+      %\vfill
+      \vskip 0.75 true in
+      \@submitdate%   should be just month and year
+    \end{center}%
+    \par
+    \vfill
+    \ifcopyright
+          \noindent Copyright~ \@copyrightyear \hfill \@author
+    \fi
+  \end{titlepage}}
+
+%%
+%% Start a Preface Page
+%%
+\newdimen\prefacetopspace
+\prefacetopspace=1.0 true in
+
+\def\prefacesection{%
+  \@ifnextchar [%
+    {\@prefacesectionB}%
+    {\@prefacesectionA}}
+
+\def\@prefacesectionA#1{%
+  \@prefacesectionB[#1]{#1}}
+
+\def\@prefacesectionB[#1]#2{%
+  \newpage
+  \pagestyle{plain}%
+  \null
+  \vskip\prefacetopspace
+  %\begin{center}%
+    \section*{#2}%
+  %\end{center}%
+  \phantomsection
+  \addcontentsline{toc}{chapter}{#1}}
+
+%%
+%% Make the Table of Contents and Figures/Tables pages
+%%
+\def\tableofcontents{%
+  \begin{singlespace}
+  \@ifnextchar [%
+    {\@starspeciallist{toc}}%
+    {\@starspeciallist{toc}[Table of Contents]}
+  \end{singlespace}}
+
+\def\listoftables{%
+  \@ifstar
+    {\@ifnextchar [%
+       {\@starspeciallist{lot}}%
+       {\@starspeciallist{lot}[List of Tables]}}%
+    {\@ifnextchar [%
+       {\@speciallist{lot}}%
+       {\@speciallist{lot}[List of Tables]}}}
+
+\def\listoffigures{%
+  \@ifstar
+    {\@ifnextchar [%
+       {\@starspeciallist{lof}}%
+       {\@starspeciallist{lof}[List of Figures]}}%
+    {\@ifnextchar [%
+       {\@speciallist{lof}}%
+       {\@speciallist{lof}[List of Figures]}}}
+
+
+% redefine commands used to generate entries in lof and lot, in order to make
+% them singlespace within each entry (leaving doublespace between entries)
+\renewcommand*\l@figure[2]{
+  \begin{singlespace}
+  \@dottedtocline{1}{1.5em}{2.3em}{#1}{#2}
+  \end{singlespace}
+}
+\let\l@table\l@figure
+
+\def\@starspeciallist#1[#2]{%
+  \newpage
+  \@restonecolfalse
+  \if@twocolumn
+    \@restonecoltrue
+    \onecolumn
+  \fi
+  \chapter*{#2}%
+  \@starttoc{#1}%
+  \if@restonecol\twocolumn\fi}
+
+\def\@speciallist#1[#2]{%
+  \newpage
+  \@restonecolfalse
+  \if@twocolumn
+    \@restonecoltrue
+    \onecolumn
+  \fi
+  \chapter*{#2}%
+  \addcontentsline{toc}{chapter}{#2}
+  \@starttoc{#1}%
+  \if@restonecol\twocolumn\fi}
+
+%%
+%% Redefine the report.sty chapter definitions to suppress hyphenation
+%% in the titles.
+%%
+\def\@makechapterhead#1{%
+  \vspace*{50pt}%
+  {\parindent 0pt
+   \raggedright
+   \hyphenpenalty 10000%
+   \ifnum \c@secnumdepth > \m@ne
+     \Large\bf \@chapapp{} \thechapter\par
+     \vskip 20pt
+   \fi
+   \Large\bf #1\par
+   \nobreak
+   \vskip 40pt}
+  \hyphenpenalty 50}
+
+\def\@makeschapterhead#1{%
+  \vspace*{50pt}%
+  {\parindent 0pt
+   \raggedright
+   \hyphenpenalty 10000%
+   \Large\bf #1\par
+   \nobreak
+   \vskip 40pt}
+  \hyphenpenalty 50}
+
+%%
+%% Redefine the report.sty section definitions.  The \@startsection
+%% command takes the arguments:
+%%
+%%       {Name}{Level}{Indent}{BeforeSkip}{AfterSkip}{Style}
+%%
+%% ABS(BeforeSkip) == amount to skip; if (BeforeSkip < 0), suppress
+%% the par indent of the text following the heading.
+%%
+%% ABS(AfterSkip) == amount to skip; if (AfterSkip < 0), make the
+%% following text "run-in" after the heading.
+%%
+%% Also new section takes a `*' which suppress the section counting,
+%% and if the `*' is not present an optional [Altheading]{heading}
+%% pair.
+%%
+
+% also, redefine the \chapter command in order to remove the inter-chapter
+% spacing that is normally added to the LOF and LOT
+\renewcommand\chapter{\if@openright\cleardoublepage\else\clearpage\fi
+                      \thispagestyle{plain}%
+                      \global\@topnum\z@
+                      \@afterindentfalse
+                      \secdef\@chapter\@schapter}
+\def\@chapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
+                         \refstepcounter{chapter}%
+                         \typeout{\@chapapp\space\thechapter.}%
+                         \addcontentsline{toc}{chapter}%
+                                   {Chapter \protect\numberline{\thechapter:}#1}%
+                    \else
+                      \addcontentsline{toc}{chapter}{Chapter: #1}%
+                    \fi
+                    \chaptermark{#1}%
+                    %\addtocontents{lof}{\protect\addvspace{10\p@}}%
+                    %\addtocontents{lot}{\protect\addvspace{10\p@}}%
+                    \if@twocolumn
+                      \@topnewpage[\@makechapterhead{#2}]%
+                    \else
+                      \@makechapterhead{#2}%
+                      \@afterheading
+                    \fi}
+
+\def\section{\@startsection{section}%                    Name
+            {1}%                                         Level
+            {\z@}%                                       Indent
+            {-3.5ex plus -1ex minus -.2ex}%              BeforeSkip
+            {2.3ex plus .2ex}%                           AfterSkip
+            {\Large\bf\hyphenpenalty 10000}}%            Style
+
+\def\subsection{\@startsection{subsection}%              Name
+               {2}%                                      Level
+               {\z@}%                                    Indent
+               {-3.5ex plus -1ex minus -.2ex}%           BeforeSkip
+               {1.5ex plus .2ex}%                        AfterSkip
+               {\large\bf\hyphenpenalty 10000}}%         Style
+
+\def\subsubsection{\@startsection{subsubsection}%        Name
+                  {3}%                                   Level
+                  {\z@}%                                 Indent
+                  {-3.5ex plus -1ex minus -.2ex}%        BeforeSkip
+                  {1.5ex plus .2ex}%                     AfterSkip
+                  {\normalsize\bf\hyphenpenalty 10000}}% Style
+
+\def\paragraph{\@startsection{paragraph}%                Name
+              {4}%                                       Level
+              {\z@}%                                     Indent
+              {3.25ex plus 1ex minus .2ex}%              BeforeSkip
+              {-1em}%                                    AfterSkip
+              {\normalsize\bf\hyphenpenalty 10000}}%     Style
+
+\def\subparagraph{\@startsection{subparagraph}%          Name
+                 {4}%                                    Level
+                 {\parindent}%                           Indent
+                 {3.25ex plus 1ex minus .2ex}%           BeforeSkip
+                 {-1em}%                                 AfterSkip
+                 {\normalsize\bf\hyphenpenalty 10000}}%  Style
+
+%%
+%% The value of the counter secnumdepth gives the depth of the
+%% highest-level sectioning command that is to produce section
+%% numbers.
+%%
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+%%
+%% Redefine the report.sty `Bibliography' as a `References' chapter.
+%%
+%%
+%% APPENDIX
+%%
+%% The \appendix command must do the following:
+%%    -- reset the chapter counter to zero
+%%    -- set \@chapapp to Appendix (for messages)
+%%    -- redefine the chapter counter to produce appendix numbers
+%%    -- reset the section counter to zero
+%%    -- redefine the \chapter command if appendix titles and headings
+%%       are to look different from chapter titles and headings.
+%%
+%% For USC, the Appendix appears VERY oddly in the table of contents.
+%%
+\def\appendix{
+  \par
+  \setcounter{chapter}{0}
+  \setcounter{section}{0}
+  \def\@chapapp{Appendix}
+  \def\thechapter{\Alph{chapter}}
+  \def\@chapter[##1]##2{
+    \refstepcounter{chapter}
+    \typeout{\@chapapp\space\thechapter.}
+%	\addtocontents{toc}{ % has problem with hyperref
+%      \protect\contentsline{chapter}{Appendix \thechapter}{\relax}}
+    \addcontentsline{toc}{chapter}{Appendix \thechapter}
+	\addcontentsline{toc}{section}{##1}
+    \chaptermark{##1}
+    %\addtocontents{lof}{\protect\addvspace{10pt}}% Adds between-chapter space
+    %\addtocontents{lot}{\protect\addvspace{10pt}}% to lists of figs & tables.
+    \if@twocolumn
+      \@topnewpage[\@makechapterhead{##2}]
+    \else \@makechapterhead{##2}
+      \@afterheading                             % Routine called after chap
+    \fi}}                                        %   and section heading.
+
+%%
+%%  Define the `saying' environment
+%%  Used to set a cutesy little quotation at the start of the chapter
+%%
+\def\saying{%
+  \trivlist
+  \raggedleft
+  \item[]\em}
+
+\def\endsaying{%
+  \endtrivlist
+  \vspace{20pt}}
+
+%%
+%% Define the starting pagestyle
+%%
+\pagestyle{plain}
