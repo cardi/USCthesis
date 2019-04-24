@@ -828,11 +828,11 @@
       \vskip 0.5 true in
       by%
       \vskip 0.16 true in
-      {\begin{tabular}[t]{c}\@author\\*[.66 true in]%
-      %changed to width 5.8 thickness 0.010 
-       \rule{5.8 true in}{0.010 true in}
-       \end{tabular}%
-       \par}
+      % remove tabular environment to get it aligned within
+      % bounding box ---calvin 2019-04-04
+      \@author\\*[.66 true in]%
+      \rule{5.8 true in}{0.010 true in}
+      \par
       \vskip 1.0 true in
       % Added by Marcos
     \end{doublespace}
