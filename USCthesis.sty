@@ -551,10 +551,10 @@
 %% Modify Penalties
 %%
 \brokenpenalty 10000       % Disallow page breaks at hyphens (this
-               % will give some underfull vbox's, so an
-               % alternative is to use \brokenpenalty=100
-               % and manually search for and fix such page
-               % breaks)
+                           %   will give some underfull vbox's, so an
+                           %   alternative is to use \brokenpenalty=100
+                           %   and manually search for and fix such page
+                           %   breaks)
 \clubpenalty 10000         % Disallow club (orphan) lines
 \displaywidowpenalty 10000 % Disallow widow lines before display
 \widowpenalty 10000        % Disallow widow lines
@@ -581,11 +581,11 @@
 \pagetop{1.1 true in}    % 1 inch plus allowance
 \pageleft{1.6 true in}   % 1.5 inches plus allowance
 \pageheight{8.5 true in} % 9 inches minus allowance
-\pagewidth{5.85 true in}  % 6 inches minus allowance
-\pagemargin{2.0}          % Number of (unstretched) lines
-                          % between text and page number
+\pagewidth{5.85 true in} % 6 inches minus allowance
+\pagemargin{2.0}         % Number of (unstretched) lines
+                         % between text and page number
 
-\setstretch{2.0}          % get "real" double spacing?
+\setstretch{2.0}         % get "real" double spacing?
 
 \ifflushbottom
   \flushbottom
@@ -892,6 +892,20 @@
   \@prefacesectionB[#1]{#1}}
 
 \def\@prefacesectionB[#1]#2{%
+  % old way of doing a preface section ---calvin 2019-12-21
+  % \newpage
+  % \pagestyle{plain}%
+  % \phantomsection
+  % \addcontentsline{toc}{chapter}{#1}
+  % \null
+  % \vskip\prefacetopspace
+  % %\begin{center}%
+  %   \section*{#2}%
+  % %\end{center}%
+
+  % to make the sections look consistent with the other chapters and
+  % bibliography (top margin, etc.), we'll use \chapter instead of
+  % \section.
   \newpage
   % next 2 lines are after \newpage so bookmarks go to the same
   % consistent spot as chapters, LOF, LOT, etc. ---calvin 2020-02-25
@@ -907,12 +921,25 @@
 %%
 %% Make the Table of Contents and Figures/Tables pages
 %%
+%\def\tableofcontents{%
+%  \begin{singlespace}
+%  \@ifnextchar [%
+%    {\@starspeciallist{toc}}%
+%    {\@starspeciallist{toc}[Table of Contents]}
+%  \end{singlespace}}
+
+% Table of Contents now looks consistent with other Chapters and
+% prefacesections. We want a PDF bookmark, but not an actual line entry in
+% the Table of Contents. ---calvin 2019-12-21
 \def\tableofcontents{%
+  \newpage
+  \pdfbookmark{Table of Contents}{Table of Contents}
+  \chapter*{Table of Contents}%
   \begin{singlespace}
-  \@ifnextchar [%
-    {\@starspeciallist{toc}}%
-    {\@starspeciallist{toc}[Table of Contents]}
-  \end{singlespace}}
+    \vskip -1em
+    \@starttoc{toc}%
+  \end{singlespace}
+}
 
 \def\listoftables{%
   \@ifstar
@@ -1028,6 +1055,7 @@
                                                       {#1}}%
                     \else
                       \addcontentsline{toc}{chapter}{Chapter: #1}%
+                                  {\texorpdfstring{Chapter: #1}{#1}}%
                     \fi
                     \chaptermark{#1}%
                     %\addtocontents{lof}{\protect\addvspace{10\p@}}%
