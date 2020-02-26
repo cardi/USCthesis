@@ -869,7 +869,10 @@
 %% Start a Preface Page
 %%
 \newdimen\prefacetopspace
-\prefacetopspace=1.0 true in
+% spacing from the top for preface pages (abstract, acknowledgements,
+% etc.) should be the same as chapters (\@makechapterhead)
+% ---calvin 2020-02-25
+\prefacetopspace=50 pt
 
 \def\prefacesection{%
   \@ifnextchar [%
@@ -881,14 +884,16 @@
 
 \def\@prefacesectionB[#1]#2{%
   \newpage
+  % next 2 lines are after \newpage so bookmarks go to the same
+  % consistent spot as chapters, LOF, LOT, etc. ---calvin 2020-02-25
+  \phantomsection
+  \addcontentsline{toc}{chapter}{#1}
+  %
   \pagestyle{plain}%
   \null
-  \vskip\prefacetopspace
-  %\begin{center}%
-    \section*{#2}%
-  %\end{center}%
-  \phantomsection
-  \addcontentsline{toc}{chapter}{#1}}
+  \vskip\prefacetopspace%
+  \section*{#2}%
+}
 
 %%
 %% Make the Table of Contents and Figures/Tables pages
@@ -1004,10 +1009,14 @@
                       \@afterindentfalse
                       \secdef\@chapter\@schapter}
 \def\@chapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
-                         \refstepcounter{chapter}%
-                         \typeout{\@chapapp\space\thechapter.}%
-                         \addcontentsline{toc}{chapter}%
-                                   {Chapter \protect\numberline{\thechapter:}#1}%
+                      \refstepcounter{chapter}%
+                      \typeout{\@chapapp\space\thechapter.}%
+                      % TOC entry will have the full "Chapter [Number]:
+                      % [indent] [Title]", and the PDF bookmark will be
+                      % shortened to just "[Title]" ---calvin 2020-02-25
+                      \addcontentsline{toc}{chapter}%
+                                      {\texorpdfstring{Chapter \protect\numberline{\thechapter:}#1}%
+                                                      {#1}}%
                     \else
                       \addcontentsline{toc}{chapter}{Chapter: #1}%
                     \fi
