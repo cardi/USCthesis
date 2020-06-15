@@ -44,6 +44,10 @@
 %$%     other sections/chapters
 %$%   Fix pdfbookmarks for chapters, formatted as "[Title]" (was:
 %$%     "Chapter [Title]")
+%$%   Remove horizontal rule on title page
+%$%   Page margins are now 1" all around (before: accounted for margin
+%$%     gutter)
+%$%   Footer margin for page numbers are 0.5" from the bottom
 %$%
 %$% Revision 1.3.1  2016/06/15 19:00:00  Masoud Moshref
 %$%	  Remove \reference command. Use biblatex package insteaad
@@ -578,14 +582,16 @@
 \itemsep    0.0 true pt           % Extra vertical space, in addition to
                                   %   \parskip, added between list items
 
-\pagetop{1.1 true in}    % 1 inch plus allowance
-\pageleft{1.6 true in}   % 1.5 inches plus allowance
-\pageheight{8.5 true in} % 9 inches minus allowance
-\pagewidth{5.85 true in} % 6 inches minus allowance
-\pagemargin{2.0}         % Number of (unstretched) lines
-                         % between text and page number
+\footskip   0.5 true in           % page number must be 0.5" from bottom
 
-\setstretch{2.0}         % get "real" double spacing?
+\pagetop{1.0 true in}   % 1 inch plus allowance
+\pageleft{1.0 true in}  % 1.5 inches plus allowance
+\pageheight{9 true in}  % 9 inches minus allowance
+\pagewidth{6.5 true in} % 6 inches minus allowance
+%\pagemargin{2.0}       % Number of (unstretched) lines
+                        % between text and page number
+
+\setstretch{2.0}        % get "real" double spacing?
 
 \ifflushbottom
   \flushbottom
@@ -840,7 +846,9 @@
       % remove tabular environment to get it aligned within
       % bounding box ---calvin 2019-04-04
       \@author\\*[.66 true in]%
-      \rule{5.8 true in}{0.010 true in}
+      %\rule{5.8 true in}{0.010 true in}
+      % remove the horizontal rule per Manuscript formatting guidelines
+      % ---calvin 2020-06-12
       \par
       \vskip 1.0 true in
       % Added by Marcos
