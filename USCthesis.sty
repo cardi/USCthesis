@@ -967,6 +967,9 @@
        {\@speciallist{lof}}%
        {\@speciallist{lof}[List of Figures]}}}
 
+% add a bit of glue to avoid overflow/overfull hboxes in the TOC
+% ---calvin 2020-06-14
+\def\@tocrmarg{2.55em plus 3em}
 
 % redefine commands used to generate entries in lof and lot, in order to make
 % them singlespace within each entry (leaving doublespace between entries)
@@ -1074,6 +1077,37 @@
                       \@makechapterhead{#2}%
                       \@afterheading
                     \fi}
+
+
+% TODO figure out how to get the second line a TOC Chapter entry
+% to be lined up properly ---calvin 2020-06-14
+
+%\renewcommand*\l@chapter{\pagebreak[3]\vskip 10pt plus 1pt minus 1pt
+%                         \@dottedtocline{0}{0em}{1.4em}}
+%\newlength\@mylll%
+%\settowidth{\@mylll}{Chapter1}
+
+\renewcommand*\l@chapter[2]{%
+  \ifnum \c@tocdepth >\m@ne
+    \addpenalty{-\@highpenalty}%
+    \vskip 1.0em \@plus\p@
+    \setlength\@tempdima{1.5em}%
+    \begingroup
+      \parindent \z@ \rightskip \@pnumwidth
+      \parfillskip -\@pnumwidth
+      \leavevmode \bfseries
+      %\hangindent\@mylll\hangafter1%
+      \hangindent3.95em\hangafter1% ugly hard-code to get TOC entries to
+                                  % indent properly. probably doesn't
+                                  % work if the font size != 11pt, or if
+                                  % there are double-digit chapters
+                                  % ---calvin 2020-06-14
+      \advance\leftskip\@tempdima
+      \hskip -\leftskip
+      #1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+      \penalty\@highpenalty
+    \endgroup
+  \fi}
 
 \def\section{\@startsection{section}%                    Name
             {1}%                                         Level
