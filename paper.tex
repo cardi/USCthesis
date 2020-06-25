@@ -1,0 +1,257 @@
+\documentclass[11pt]{report}
+\usepackage[
+  dissertation
+ ,final
+ ,raggedbottom
+]{USCthesis}
+
+% guidelines for manuscript formatting: http://graduateschool.usc.edu/wp-content/themes/fictional-university-theme/assets/doc/Manuscript_Formatting_and_Documentation_Styles.pdf
+
+%% our customizations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[export]{adjustbox} % for frame option in \includegraphics
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage[utf8]{inputenc} % load inputenc before csquotes
+\usepackage[english]{babel}
+\usepackage[
+  backend     = biber,
+  doi         = true,
+  hyperref    = true,
+  maxbibnames = 99,
+  sortlocale  = en_US,
+  style       = numeric,
+]{biblatex}
+\usepackage{booktabs}
+\usepackage{color, colortbl}
+\usepackage{csquotes}
+\usepackage{efbox}
+\usepackage{enumitem}
+\usepackage[shortcuts]{extdash} % use `\-/' to hyphenate words/phrases that have a dash in them
+\usepackage[tt=false]{libertine} % libertine's \ttfamily isn't that great
+\usepackage[T1]{fontenc} % load fonts before fontenc
+\usepackage[symbol]{footmisc}
+\usepackage[
+  showframe = false,% draw a border around textwidth
+  pass      = true, % force 8.5"x11" pagesize
+]{geometry}
+\usepackage{graphicx}
+%\usepackage[notquote]{hanging} % enables negative indents in paragraphs
+\usepackage{hyphenat}
+\usepackage{ifthen}
+\usepackage{lipsum}
+\usepackage{multirow}
+\usepackage{parnotes}
+\usepackage{pdflscape} % rotate some pages in an {landscape} environment
+\usepackage{pifont}
+\usepackage{ragged2e}
+\usepackage{seqsplit}
+\usepackage{siunitx}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{xspace}
+\usepackage{url}
+
+\usepackage[
+  breaklinks    = true,
+  colorlinks    = true,
+  hypertexnames = false,
+  pdfpagelabels = false,
+  citecolor     = {blue!80!black},
+  linkcolor     = {blue!80!black},
+  urlcolor      = {blue!80!black},
+]{hyperref} % load hyperref as the last package
+
+% pkg: biblatex
+\setlength\bibitemsep{0.5\baselineskip}                 % add a line between entries
+\AtEveryBibitem{\iffieldundef{doi}{}{\clearfield{url}}} % if DOI, hide URL
+
+\addbibresource{paper.bib}
+
+% pkg: siunitx
+% some guidelines https://physics.nist.gov/cuu/Units/checklist.html
+\sisetup{
+  tight-spacing  = true
+  ,detect-family = true
+  ,detect-mode   = true
+  ,binary-units  = true    % support for MB, GB, etc.
+  ,range-units   = single  % "3% to 5%" -> "3 to 5%"
+  ,range-phrase  = --      % "3 to 5%"  -> "3--5%"
+}
+
+% pkg: babel, hyperref
+\addto\extrasenglish{%
+  \renewcommand{\chapterautorefname}{Chapter}
+  \renewcommand{\sectionautorefname}{Section}
+  \renewcommand{\subsectionautorefname}{Section}
+  \renewcommand{\subsubsectionautorefname}{Section}
+}
+
+% pkg: url
+\renewcommand{\UrlFont}{\footnotesize\tt}
+
+% our custom commands
+\renewcommand{\ttdefault}{cmtt} % use computer modern for teletype
+
+%%% draft mode / toggle commands %%%
+\usepackage{etoolbox}
+\newtoggle{draft}
+\settoggle{draft}{true} % change toggle for draft or final versions
+
+\iftoggle{draft}{
+  % if 'draft' toggle is true
+  \overfullrule=10pt                       % highlight overfull hboxes
+}{
+  % if 'draft' toggle is false
+  \PassOptionsToPackage{final}{showlabels} % hide labels on figures, etc
+}
+
+% if you're including existing papers into your thesis, it helps to put
+% content behind a toggle (or conditional) so you only have to maintain
+% and keep consistency on one copy. see "introduction.tex".
+\newtoggle{thesis}
+\settoggle{thesis}{true}
+
+\usepackage[inline]{showlabels}
+\renewcommand{\showlabelfont}{\sffamily \color{blue}}
+\renewcommand{\showlabelsetlabel}[1]{\efbox{\showlabelfont #1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% front matter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+% title should be all caps
+\title{[DISSERTATION TITLE]}
+
+% use your full name!
+% https://cs.stanford.edu/~knuth/news19.html
+% "Let's celebrate everybody's full names"
+\author{[Full Name]}
+
+% major should be all caps
+\majorfield{[MAJOR]}
+
+% date should be May, August, or December (when degrees are conferred)
+\submitdate{August 20XX}
+
+%%% preface %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{preface}
+  \prefacesection{Dedication}
+  \input{dedication.tex}
+
+  \prefacesection{Acknowledgements}
+  \input{acknowledgements.tex}
+
+  {
+  \hypersetup{hidelinks} % color all links black in the preface
+  \tableofcontents
+  \listoftables
+  \listoffigures
+  }
+
+  \prefacesection{Abstract}
+  \input{abstract.tex}
+\end{preface}
+
+%%% introduction %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Introduction}
+  \label{ch:introduction}
+
+\graphicspath{}
+\input{introduction.tex}
+
+%%% chapter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% if you're "stapling" together papers, it's easy to include your paper
+% directory by way of symlinks, or copying the entire paper as a
+% subdirectory.
+%
+% for example, if your paper directory looks like the following:
+%
+%   foobar/          - top level paper directory
+%   foobar/fig/      - where all graphics and figures live
+%   foobar/paper.bib - bibliography
+%   foobar/paper.tex - monolithic .tex file for paper
+%
+% then you might use the folloiwng:
+%
+%   \graphicspath{foobar/fig}
+%   \addbibresource{foobar/paper.bib}
+%   \input{foobar/paper.tex}
+%
+% note that you'll have to modify the input file to make sure that the
+% preamble (\documentclass, etc.) isn't included. to make your life
+% easier, you could use some TeX conditionals to make it seamless.
+%
+% this requires some planning, but enables you to edit the individual
+% paper and thesis chapter without tracking and porting changes between
+% multiple directories and repositories:
+%
+% for example, at the beginning of foobar/paper.tex (before
+% \documentclass):
+%
+%   \newif\ifdissertation
+%   \dissertationtrue      % (or \dissertationfalse for the standalone)
+%
+%   \ifdissertation
+%   \else
+%   \documentclass...
+%   \fi
+%
+%   \ifdissertation
+%   \else
+%   \begin{document}
+%   \fi
+%
+%   [...paper content here...]
+%
+%   \ifdissertation
+%   \else
+%   \end{document}
+%   \fi
+
+%%% conclusions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Conclusions}
+  \label{ch:conclusions}
+
+\graphicspath{}
+\input{conclusions}
+
+%%% bibliography %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  \printbibliography in biblatex is great, but doesn't allow for the
+%  greatest customization, so we'll use the package biblatex + biber
+%  backend to meet some requirements:
+%
+%  * bibliography should be an un-numbered chapter, and still have a
+%    pdfbookmark and a line in the table of contents
+%
+%  * bibliography contents should be singlespace, and optionally a smaller
+%    font
+%
+%  * first line of this "chapter" should be in the same spot as the first
+%    line of preface sections (e.g., acknowledgement)
+%
+%  * we use \raggedright so things like URLs and DOIs aren't stretched out.
+%
+\clearpage
+\chapter*{Bibliography}
+\addcontentsline{toc}{chapter}{Bibliography}
+
+\begin{singlespace}
+  % increase penalty such that we don't break entries over pages
+  % source: https://tex.stackexchange.com/a/43275
+  \patchcmd{\bibsetup}{\interlinepenalty=5000}{\interlinepenalty=10000}{}{}
+
+  % reduce spacing between each bibentry
+  \setlength\bibitemsep{0.9\baselineskip}
+
+  % don't justify-align entries: this prevents stretching out each line
+  \raggedright
+  \printbibliography[
+    heading = none
+  ]
+\end{singlespace}
+
+\end{document}

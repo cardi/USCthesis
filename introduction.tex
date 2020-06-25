@@ -1,0 +1,44 @@
+\section{An example section}
+  \label{sec:example}
+
+\iftoggle{thesis}{%
+  This is content that shows up only in the thesis.
+}{
+  Because of space constraints, we leave this as an exercise to the
+  reader.
+}
+
+\iftoggle{draft}{%
+  \textsf{[\textbf{comment}: Fix such and such, revise
+  \autoref{sec:yet-another-example}.  Rewrite \autoref{ch:conclusions}.]}
+}{}
+
+\subsection{An example sub-section}
+  \label{sec:another-example}
+
+The end-to-end princple~\cite{10.1145/357401.357402}.
+
+\subsubsection{An example sub-sub-section}
+  \label{sec:yet-another-example}
+
+This-is-an-overfull-hbox-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW.
+
+Overfull hboxes (text going into the margins) will have a visible marker
+in the margin indicating where it's overfull.
+
+\begin{table}
+\centering
+\begin{tabular}{lS}
+\toprule
+$x$      & \textbf{value} \\
+\midrule
+a        & 1.23           \\
+b        & 3.456          \\
+c        & 100.0002       \\
+d        & 12345.0        \\
+\bottomrule
+\end{tabular}
+\caption[short caption for the LOT]
+        {longer caption for the paper}
+\label{tbl:example}
+\end{table}
