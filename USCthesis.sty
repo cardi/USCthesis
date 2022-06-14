@@ -944,6 +944,9 @@
   \pdfbookmark{Table of Contents}{Table of Contents}
   \chapter*{Table of Contents}%
   \begin{singlespace}
+    % The style guide specifies page numbers should not be bold.
+    % Default is normal for sections, but bold for chapters.
+    \let\bfseries\mdseries
     \vskip -1em
     \@starttoc{toc}%
   \end{singlespace}
