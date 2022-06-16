@@ -37,6 +37,13 @@
 %%% }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %$% $Log: USCthesis.sty,v $
+%$%
+%$% Revision 1.4.1  2022/06/16 00:00:00  Calvin Ardi
+%$%   ToC: chapter titles and page numbers are now medium-weight instead
+%$%     of bold--USC style guidelines state that page numbers are always
+%$%     non-bold. (Credit: James Preiss for finding bug)
+%$%   Package: adds `tocbold` option to bold chapter titles in ToC
+%$%
 %$% Revision 1.4.0  2020/06/25 00:00:00  Calvin Ardi
 %$%   Page: margins are now 1" all around (before: accounted for margin
 %$%     gutter)
@@ -420,13 +427,13 @@
 
 % make it a modern package - BPG
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{USCthesis}[2020/06/25 v1.4.0]
+\ProvidesPackage{USCthesis}[2022/06/16 v1.4.1]
 
 %%
 %% Declare the dissertation style
 %%
-\typeout{Dissertation/thesis package USCthesis Version 1.4.0 as
-          of 25 June 2020}
+\typeout{Dissertation/thesis package USCthesis Version 1.4.1 as
+          of 16 June 2022}
 
 %%
 %% the following option-parsing code is changed to conform to the LaTeX2e
