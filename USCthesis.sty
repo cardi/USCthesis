@@ -291,6 +291,10 @@
 %%%     `flushbottom' (default) or `raggedbottom' to make text either flush
 %%%       or ragged at the bottom of each page.
 %%%
+%%%     `tocbold' to make the chapter titles in the Table of Contents
+%%%       bold. Default is non-bold chapter titles. Page numbers are
+%%%       always non-bold.
+%%%
 %%%  The following may be set PRIOR to the \begin{document} in order
 %%%  to make adjustments to fit the text in the "blue lines".  The
 %%%  values listed below are the defaults:
@@ -489,6 +493,12 @@
 }}
 
 
+\newif\iftocbold
+\tocboldfalse % Default
+\DeclareOption{tocbold} {
+  \tocboldtrue
+}
+
 % set the defaults
 \ExecuteOptions{dissertation,final,copyright,fussy,clref,flushbottom}
 \ProcessOptions
@@ -547,9 +557,10 @@
 %% Let the user declare the document to be of \documentclass{report},
 %% then \usepackage{USCthesis} -BPG
 %%
-%%\usepackage{doublespace}
 \usepackage{setspace}
 \usepackage{tabularx}
+\usepackage[titles]{tocloft} % `titles` option typesets titles with
+                             % default LaTeX methods
 
 %%
 %% Modify Penalties
@@ -930,16 +941,34 @@
 %%
 %% Make the Table of Contents and Figures/Tables pages
 %%
-%\def\tableofcontents{%
-%  \begin{singlespace}
-%  \@ifnextchar [%
-%    {\@starspeciallist{toc}}%
-%    {\@starspeciallist{toc}[Table of Contents]}
-%  \end{singlespace}}
 
 % Table of Contents now looks consistent with other Chapters and
 % prefacesections. We want a PDF bookmark, but not an actual line entry in
 % the Table of Contents. ---calvin 2019-12-21
+
+% Chapter titles are by default set to medium-weight (`\mdseries`)
+% and can be configured to be bold-weight (`\bfseries`). Per USC style
+% guidelines, page numbers are always medium-weight.
+% ---calvin 2022-06-16
+\iftocbold
+    \renewcommand{\cftchapfont}{\bfseries}
+\else
+    \renewcommand{\cftchapfont}{\mdseries}
+\fi
+
+\renewcommand{\cftchappagefont}{\mdseries} % page numbers should always
+                                           %   be non-bold
+
+\renewcommand{\cftchappresnum}{Chapter }   % add prefix "Chapter "
+                                           %   before the chapter number
+
+% Increase the width of the text+number box so that multi-line chapter
+% titles are vertically aligned
+\newlength{\mychplen}
+\settowidth{\mychplen}{\cftchapfont{}Chapter} % don't include the " "
+                                              %   after "Chapter"
+\addtolength{\cftchapnumwidth}{\mychplen}     % add extra space
+
 \def\tableofcontents{%
   \newpage
   \pdfbookmark{Table of Contents}{Table of Contents}
@@ -1059,56 +1088,18 @@
 \def\@chapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
                       \refstepcounter{chapter}%
                       \typeout{\@chapapp\space\thechapter.}%
-                      % TOC entry will have the full "Chapter [Number]:
-                      % [indent] [Title]", and the PDF bookmark will be
-                      % shortened to just "[Title]" ---calvin 2020-02-25
-                      \addcontentsline{toc}{chapter}%
-                                      {\texorpdfstring{Chapter \protect\numberline{\thechapter:}#1}%
-                                                      {#1}}%
+                      \addcontentsline{toc}{chapter}{\protect\numberline{\thechapter:}#1}%
                     \else
                       \addcontentsline{toc}{chapter}{Chapter: #1}%
                                   {\texorpdfstring{Chapter: #1}{#1}}%
                     \fi
                     \chaptermark{#1}%
-                    %\addtocontents{lof}{\protect\addvspace{10\p@}}%
-                    %\addtocontents{lot}{\protect\addvspace{10\p@}}%
                     \if@twocolumn
                       \@topnewpage[\@makechapterhead{#2}]%
                     \else
                       \@makechapterhead{#2}%
                       \@afterheading
                     \fi}
-
-
-% TODO figure out how to get the second line a TOC Chapter entry
-% to be lined up properly ---calvin 2020-06-14
-
-%\renewcommand*\l@chapter{\pagebreak[3]\vskip 10pt plus 1pt minus 1pt
-%                         \@dottedtocline{0}{0em}{1.4em}}
-%\newlength\@mylll%
-%\settowidth{\@mylll}{Chapter1}
-
-\renewcommand*\l@chapter[2]{%
-  \ifnum \c@tocdepth >\m@ne
-    \addpenalty{-\@highpenalty}%
-    \vskip 1.0em \@plus\p@
-    \setlength\@tempdima{1.5em}%
-    \begingroup
-      \parindent \z@ \rightskip \@pnumwidth
-      \parfillskip -\@pnumwidth
-      \leavevmode \bfseries
-      %\hangindent\@mylll\hangafter1%
-      \hangindent3.95em\hangafter1% ugly hard-code to get TOC entries to
-                                  % indent properly. probably doesn't
-                                  % work if the font size != 11pt, or if
-                                  % there are double-digit chapters
-                                  % ---calvin 2020-06-14
-      \advance\leftskip\@tempdima
-      \hskip -\leftskip
-      #1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
-      \penalty\@highpenalty
-    \endgroup
-  \fi}
 
 \def\section{\@startsection{section}%                    Name
             {1}%                                         Level
