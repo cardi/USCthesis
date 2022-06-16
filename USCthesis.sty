@@ -433,7 +433,7 @@
 %%
 \newif\ifthesis
 \DeclareOption{dissertation}{
-  \thesisfalse   % Default
+  \thesisfalse % Default
 }
 \DeclareOption{thesis} {
   \thesistrue
@@ -441,7 +441,7 @@
 
 \newif\ifproposal
 \DeclareOption{final} {
-  \proposalfalse        % Default
+  \proposalfalse % Default
 }
 \DeclareOption{proposal} {
   \proposaltrue
@@ -457,7 +457,7 @@
 }
 
 \DeclareOption{fussy} {
-  \fussy                         % Default
+  \fussy % Default
 }
 \DeclareOption{sloppy} {
   \sloppy
@@ -465,7 +465,7 @@
 
 \newif\ifflushbottom
 \DeclareOption{flushbottom} {
-  \flushbottomtrue                         % Default
+  \flushbottomtrue % Default
 }
 \DeclareOption{raggedbottom} {
   \flushbottomfalse
@@ -476,7 +476,7 @@
   \openbibtrue
 }
 \DeclareOption{clref} {
-  \def\ds@clref{\openbibfalse}         % Default
+  \def\ds@clref{\openbibfalse} % Default
 }
 
 
@@ -494,11 +494,12 @@
 \ProcessOptions
 
 %%
-%% Define the Layout adjustment commands.  Initialization of values is
-%% made after loading the report style.
+%% Define the Layout adjustment commands.
+%%
+%% Initialization of values is made after loading the report style.
 %%
 \def\pagetop#1{%
-  \global \topmargin #1             % Nominal distance from page top to
+  \global \topmargin #1                    % Nominal distance from page top to
   \global\advance \topmargin -1.0 true in} %   top of boxwith running head.
 
 \def\pageleft{%
@@ -831,7 +832,7 @@
     \vfill%\vfill
     \begin{center}%
     % Added by Marcos
-    \begin{doublespace} 
+    \begin{doublespace}
     %\doublespacing
       {\@title \par}%         Set title the same size as "FACULTY OF ..."
       \ifx\@volume\@empty\else
@@ -852,7 +853,7 @@
       \vskip 1.0 true in
       % Added by Marcos
     \end{doublespace}
-    %\singlespace 
+    %\singlespace
       \ifthesis
         A Thesis Presented to the%
       \else
