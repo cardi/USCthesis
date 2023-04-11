@@ -959,9 +959,18 @@
 % ---calvin 2022-06-16
 \iftocbold
     \renewcommand{\cftchapfont}{\bfseries}
+    
+    % change the weight of the dots
+    \renewcommand{\cftchapleader}{\bfseries\cftdotfill{\cftchapdotsep}} 
 \else
     \renewcommand{\cftchapfont}{\mdseries}
+    
+    % change the weight of the dots
+    \renewcommand{\cftchapleader}{\mdseries\cftdotfill{\cftchapdotsep}}
 \fi
+
+\renewcommand\cftchapdotsep{\cftdotsep}	   % add dots in between capter names
+                                           % and page numbers
 
 \renewcommand{\cftchappagefont}{\mdseries} % page numbers should always
                                            %   be non-bold
