@@ -56,7 +56,7 @@
 %$%     other sections/chapters
 %$%
 %$% Revision 1.3.1  2016/06/15 19:00:00  Masoud Moshref
-%$%	  Remove \reference command. Use biblatex package insteaad
+%$%      Remove \reference command. Use biblatex package insteaad
 %$%   Fix appendix and prefacesection to work with hyperref package
 %$%
 %$% Revision 1.3  2010/08/12 19:00:00  Marcos Vieira
@@ -959,18 +959,18 @@
 % ---calvin 2022-06-16
 \iftocbold
     \renewcommand{\cftchapfont}{\bfseries}
-    
+
     % change the weight of the dots
-    \renewcommand{\cftchapleader}{\bfseries\cftdotfill{\cftchapdotsep}} 
+    \renewcommand{\cftchapleader}{\bfseries\cftdotfill{\cftchapdotsep}}
 \else
     \renewcommand{\cftchapfont}{\mdseries}
-    
+
     % change the weight of the dots
     \renewcommand{\cftchapleader}{\mdseries\cftdotfill{\cftchapdotsep}}
 \fi
 
-\renewcommand\cftchapdotsep{\cftdotsep}	   % add dots in between capter names
-                                           % and page numbers
+\renewcommand{\cftchapdotsep}{\cftdotsep}  % add dots in between chapter names
+                                           %   and page numbers
 
 \renewcommand{\cftchappagefont}{\mdseries} % page numbers should always
                                            %   be non-bold
@@ -1185,10 +1185,10 @@
   \def\@chapter[##1]##2{
     \refstepcounter{chapter}
     \typeout{\@chapapp\space\thechapter.}
-%	\addtocontents{toc}{ % has problem with hyperref
-%      \protect\contentsline{chapter}{Appendix \thechapter}{\relax}}
+%   \addtocontents{toc}{ % has problem with hyperref
+%     \protect\contentsline{chapter}{Appendix \thechapter}{\relax}}
     \addcontentsline{toc}{chapter}{Appendix \thechapter}
-	\addcontentsline{toc}{section}{##1}
+    \addcontentsline{toc}{section}{##1}
     \chaptermark{##1}
     %\addtocontents{lof}{\protect\addvspace{10pt}}% Adds between-chapter space
     %\addtocontents{lot}{\protect\addvspace{10pt}}% to lists of figs & tables.
